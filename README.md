@@ -11,6 +11,13 @@ Instale as dependências do projeto
 npm install
 ```
 
+Gere o autoload via composer
+-----------
+
+```
+composer dump-autoload
+```
+
 Crie as tabelas no banco de dados
 -----------
 

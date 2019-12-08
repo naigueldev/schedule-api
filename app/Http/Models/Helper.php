@@ -36,7 +36,7 @@ class Helper
     public static function formatColumns($request_all, $columns)
     {
         foreach($columns as $column){
-            if($request_all[$column]){
+            if(isset($request_all[$column])){
                 $request_all[$column] = Helper::dateToDb($request_all[$column]);
             }
         }
