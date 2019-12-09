@@ -13,9 +13,14 @@ class UniqueScheduleInUserDate implements Rule
     private $start_date;
     private $user;
     private $duplicated = false;
+    private $request;
 
     public function __construct($request)
     {
+        $this->request = $request;
+
+        $this->method = $request->method();
+
         $this->start_date = $request->start_date;
 
         $this->user = DB::table('schedules')->where('user_id', $request->user_id)->first();
@@ -32,7 +37,7 @@ class UniqueScheduleInUserDate implements Rule
     {
         $this->validateUserDate();
         
-        $this->duplicated = ($this->user) ? ($this->start_date == $this->user->start_date) : false;
+        $this->duplicated = ($this->user) ? $this->validateMethod() : false;
         
         return !$this->duplicated;
     }
@@ -48,9 +53,20 @@ class UniqueScheduleInUserDate implements Rule
     }
 
     public function validateUserDate(){
-        if($this->user){
+        if($this->user)
+        {
             $this->start_date = Helper::dateToDb($this->start_date);
             $this->user->start_date = Helper::dateToDb($this->user->start_date);
         }
+    }
+
+    public function dateAlreadyRegistered()
+    {
+        return ($this->start_date == $this->user->start_date);
+    }
+
+    public function validateMethod()
+    {
+        return ( !$this->request->isMethod('put') && $this->dateAlreadyRegistered() );
     }
 }

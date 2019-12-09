@@ -41,6 +41,13 @@ Inicie um servidor de desenvolvimento em http: // localhost: 8000
 php artisan serve
 ```
 
+Execute os testes automatizados
+-----------
+
+```
+vendor/bin/phpunit
+```
+
 Documentação da API
 ------------
 

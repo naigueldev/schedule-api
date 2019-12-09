@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Http\Models\Schedule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Faker\Generator as Faker;
 
 
 class ScheduleTest extends TestCase
@@ -49,18 +50,7 @@ class ScheduleTest extends TestCase
      */
     public function testCanListSchedules()
     {
-        $schedules = factory(Schedule::class, 1)->create()->map(function ($schedule) {
-            return $schedule->only([
-                'id', 
-                'start_date', 
-                'due_date',
-                'due_date_complete',
-                'title',
-                'description',
-                'status_id',
-                'user_id'
-            ]);
-        });
+        $schedules = factory(Schedule::class)->create();
         
         $response = $this->call('GET', 'api/schedules');
         $response->assertStatus(200)->assertJsonStructure([
@@ -78,16 +68,18 @@ class ScheduleTest extends TestCase
         
     }
 
-    // public function testCanUpdateSchedule()
-    // {
-    //     // $schedule = factory(Schedule::class)->create();
-    //     // $data = [
-    //     //     'title' => $this->faker->sentence,
-    //     //     'description' => $this->faker->paragraph,
-    //     //     'start_date' => 
-    //     // ];
-    //     // $this->put(route('posts.update', $post->id), $data)
-    //     //     ->assertStatus(200)
-    //     //     ->assertJson($data);
-    // }
+    public function testCanUpdateSchedule()
+    {
+        
+        $faker = factory(Schedule::class)->make();
+        $schedule = factory(Schedule::class)->create();
+        $data = [
+            'title' => $faker->sentence." - Edited",
+            'description' => $faker->paragraph." - Edited",
+        ];
+
+        $response = $this->putJson('api/schedules/'.$schedule->id, $data);
+
+        $response->assertStatus(200)->assertJsonStructure($data);
+    }
 }

@@ -10,6 +10,7 @@ use App\Rules\UniqueScheduleInUserDate;
 class StoreScheduleRequest extends FormRequest
 {
     private $date_format = 'd/m/Y';
+
     /**
      * Determine if the user is authorized to make this request.
      *
