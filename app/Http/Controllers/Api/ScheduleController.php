@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Schedule;
 use App\Http\Requests\StoreScheduleRequest;
+use App\Http\Requests\UpdateScheduleRequest;
 use App\Http\Models\Helper;
 use Illuminate\Support\Facades\DB;
 
@@ -25,14 +26,8 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         
-        if ($request->has('initialDate') && $request->has('finalDate')) {
-            $initialDate = Helper::dateToDb($request->initialDate);
-            $finalDate = Helper::dateToDb($request->finalDate);
-            $schedules = DB::table('schedules')->whereBetween('start_date', [$initialDate, $finalDate])->get();
-            return $schedules;
-        }
-
-        return Schedule::all();
+        return Schedule::searchBetweenDates($request);
+        
     }
 
     /**
@@ -45,7 +40,7 @@ class ScheduleController extends Controller
 
         $request->validated();
         
-        $data = Helper::formatColumns($request->all(), $this->model->formated_columns);
+        $data = Helper::formatDateColumns($request->all(), $this->model->formated_columns);
 
         return Schedule::create($data);
     }
@@ -72,16 +67,20 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return json
      */
-    public function update(StoreScheduleRequest $request, $id)
+    public function update(UpdateScheduleRequest $request, $id)
     {
         $request->validated();
 
+        $data = Helper::formatDateColumns($request->all(), $this->model->formated_columns);
+        
         $schedule = Schedule::find($id);
         
-        $data = Helper::formatColumns($request->all(), $schedule->formated_columns);
+        $error_msg = Helper::responseMessage('Nenhuma agenda encontrada para atualizar');
+        
+        if(!$schedule)
+            return response()->json($error_msg, 404);
         
         $schedule->update($data);
-
         return $schedule;
     }
 

@@ -27,7 +27,7 @@ class ScheduleValidationWeekendRule implements Rule
     */
     public function message()
     {
-        return ':attribute não pode ser final de semana!';
+        return 'Essa data não pode registrada no final de semana!';
     }
     
     

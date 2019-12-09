@@ -11,8 +11,7 @@ use Carbon\Carbon;
 class UniqueScheduleInUserDate implements Rule
 {
     private $start_date;
-    private $user;
-    private $duplicated = false;
+    private $schedule;
     private $request;
 
     public function __construct($request)
@@ -21,9 +20,12 @@ class UniqueScheduleInUserDate implements Rule
 
         $this->method = $request->method();
 
-        $this->start_date = $request->start_date;
+        $this->start_date = Helper::dateToDb($request->start_date);
 
-        $this->user = DB::table('schedules')->where('user_id', $request->user_id)->first();
+        $this->schedule = DB::table('schedules')
+            ->where('user_id', $request->user_id)
+            ->where('start_date', $this->start_date)
+            ->first();
        
     }
     /**
@@ -35,11 +37,7 @@ class UniqueScheduleInUserDate implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->validateUserDate();
-        
-        $this->duplicated = ($this->user) ? $this->validateMethod() : false;
-        
-        return !$this->duplicated;
+        return $this->validateMethod();
     }
 
     /**
@@ -49,24 +47,13 @@ class UniqueScheduleInUserDate implements Rule
      */
     public function message()
     {
-        return 'Não é permitido cadastros na mesma data de outra atividade desse usuário!';
+        return 'Não é permitido cadastros na mesma data de outra atividade desse usuário! - '.$this->schedule->id;
     }
-
-    public function validateUserDate(){
-        if($this->user)
-        {
-            $this->start_date = Helper::dateToDb($this->start_date);
-            $this->user->start_date = Helper::dateToDb($this->user->start_date);
-        }
-    }
-
-    public function dateAlreadyRegistered()
-    {
-        return ($this->start_date == $this->user->start_date);
-    }
-
+    /**
+     * Exceção: a data pode ser mantida quando for o método para atualizar
+     */
     public function validateMethod()
     {
-        return ( !$this->request->isMethod('put') && $this->dateAlreadyRegistered() );
+        return !( isset($this->schedule) && !$this->request->isMethod('put')  );
     }
 }

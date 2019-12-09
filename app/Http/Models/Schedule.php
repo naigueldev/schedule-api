@@ -4,10 +4,12 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Models\Helper;
+use Illuminate\Support\Facades\DB;
 
 class Schedule extends Model
 {   
     public $timestamps = false;
+    
     public $table = "schedules";
 
     protected $fillable = [
@@ -19,6 +21,8 @@ class Schedule extends Model
         "status_id",
         "user_id"
     ];
+
+    public $date_format = 'd/m/Y';
 
     protected $casts = [
         'start_date' => 'date:Y-m-d',
@@ -46,6 +50,19 @@ class Schedule extends Model
     {
         return $this->hasOne('App\Models\Status');
     }
+
+    public static function searchBetweenDates($request){
+
+        if ($request->has('initialDate') && $request->has('finalDate')) {
+            $initialDate = Helper::dateToDb($request->initialDate);
+            $finalDate = Helper::dateToDb($request->finalDate);
+            $schedules = DB::table('schedules')->whereBetween('start_date', [$initialDate, $finalDate])->get();
+            return $schedules;
+        }
+        
+        return Schedule::all();
+    }
+
 
 
 }

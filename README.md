@@ -41,6 +41,16 @@ Inicie um servidor de desenvolvimento em http: // localhost: 8000
 php artisan serve
 ```
 
+Configure o nome do banco de dados para rodar os testes da aplicação em:
+-----------
+
+```
+phpunit.xml
+```
+```
+<server name="DB_DATABASE" value="db_name"/>
+```
+
 Execute os testes automatizados
 -----------
 

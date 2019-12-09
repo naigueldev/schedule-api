@@ -15,6 +15,20 @@ class Helper
         
         return ($date) ? Carbon::parse($date)->format('Y-m-d') : $date;
     }
+
+    /**
+     * Obtém a data no formato pt_br
+     * @param string $date
+     * @return date
+     */
+    public static function dateToPtBr($date)
+    {
+        // $date = ($date) ? implode("/",array_reverse(explode("-",$date))) : $date;
+        
+        return ($date) ? Carbon::parse($date)->format('d/m/Y') : $date;
+    }
+
+
     /**
      * Verifica se a data informada é fim de semana
      * @param date $date
@@ -33,7 +47,7 @@ class Helper
      * @param array $columns
      * @return array
      */
-    public static function formatColumns($request_all, $columns)
+    public static function formatDateColumns($request_all, $columns)
     {
         foreach($columns as $column){
             if(isset($request_all[$column])){

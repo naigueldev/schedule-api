@@ -3,10 +3,13 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Api\FormRequest;
+use App\Rules\ScheduleValidationWeekendRule;
+use App\Rules\UniqueScheduleInUserDate;
+use App\Rules\ScheduleValidationOnUpdate;
 use App\Http\Requests\ScheduleRequest;
 
 
-class StoreScheduleRequest extends FormRequest
+class UpdateScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +28,11 @@ class StoreScheduleRequest extends FormRequest
      */
     public function rules()
     {
+        
         $schedule = new ScheduleRequest($this);
+        
         return $schedule->rules();
+
     }
 
     /**
