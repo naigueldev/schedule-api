@@ -47,7 +47,7 @@ class UniqueScheduleInUserDate implements Rule
      */
     public function message()
     {
-        return 'Não é permitido cadastros na mesma data de outra atividade desse usuário! - '.$this->schedule->id;
+        return 'Não é permitido cadastros na mesma data e horário de outra atividade desse usuário!';
     }
     /**
      * Exceção: a data pode ser mantida quando for o método para atualizar

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Models;
+
 use Carbon\Carbon;
 
 class Helper
@@ -9,11 +11,11 @@ class Helper
      * @param string $date
      * @return date
      */
-    public static function dateToDb($date)
+    public static function dateToDb($date, $divider = '/')
     {
-        $date = ($date) ? implode("-",array_reverse(explode("/",$date))) : $date;
+        $date = ($date) ? str_replace($divider, '-', $date) : $date;
         
-        return ($date) ? Carbon::parse($date)->format('Y-m-d') : $date;
+        return ($date) ? Carbon::parse($date)->format('Y-m-d H:i:s') : $date;
     }
 
     /**
@@ -23,8 +25,6 @@ class Helper
      */
     public static function dateToPtBr($date)
     {
-        // $date = ($date) ? implode("/",array_reverse(explode("-",$date))) : $date;
-        
         return ($date) ? Carbon::parse($date)->format('d/m/Y') : $date;
     }
 

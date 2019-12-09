@@ -8,8 +8,6 @@ use App\Http\Models\Schedule;
 use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Http\Models\Helper;
-use Illuminate\Support\Facades\DB;
-
 
 class ScheduleController extends Controller
 {
@@ -25,9 +23,7 @@ class ScheduleController extends Controller
      */
     public function index(Request $request)
     {
-        
         return Schedule::searchBetweenDates($request);
-        
     }
 
     /**
@@ -37,12 +33,9 @@ class ScheduleController extends Controller
      */
     public function store(StoreScheduleRequest $request)
     {
-
         $request->validated();
         
-        $data = Helper::formatDateColumns($request->all(), $this->model->formated_columns);
-
-        return Schedule::create($data);
+        return Schedule::create($request->all());
     }
 
     /**
@@ -92,7 +85,6 @@ class ScheduleController extends Controller
      */
     public function destroy($id)
     {
-
         $res = Schedule::destroy($id);
         
         $suscess_msg = Helper::responseMessage('Deletado com sucesso');
@@ -100,6 +92,5 @@ class ScheduleController extends Controller
         $error_msg = Helper::responseMessage('Falha ao deletar');
         
         return ($res) ? response()->json($suscess_msg, 200) : response()->json($error_msg, 409);
-        
     }
 }

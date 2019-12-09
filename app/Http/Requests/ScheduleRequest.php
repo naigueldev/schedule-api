@@ -8,7 +8,7 @@ use App\Rules\UniqueScheduleInUserDate;
 class ScheduleRequest extends FormRequest
 {
     
-    private $date_format = 'd/m/Y';
+    private $date_format = 'd/m/Y H:i:s';
     public $request;
 
     public function __construct($request)
@@ -24,7 +24,7 @@ class ScheduleRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_date' =>  ['required','date_format:'.$this->date_format, 'after:today', new ScheduleValidationWeekendRule],
+            'start_date' =>  ['required','date_format:'.$this->date_format, new ScheduleValidationWeekendRule],
             'due_date' => ['required','date_format:'.$this->date_format.',after:start_date', new ScheduleValidationWeekendRule],
             'title' => 'required',
             'description' => 'required',
@@ -43,7 +43,6 @@ class ScheduleRequest extends FormRequest
         return [
             'start_date.required' => 'A data inicial é obrigatória!',
             'start_date.date_format' => 'A data deve ser no formato '.$this->date_format.'!',
-            'start_date.after' => 'A data inicial deve ser após o dia atual!',
             'due_date.date_format' => 'A data deve ser no formato '.$this->date_format.'!',
             'due_date.required' => 'A data final do prazo é obrigatória!',
             'due_date.after' => 'A data final do prazo deve ser após a data inicial!',

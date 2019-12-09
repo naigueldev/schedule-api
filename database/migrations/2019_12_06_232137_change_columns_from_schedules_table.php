@@ -15,8 +15,8 @@ class ChangeColumnsFromSchedulesTable extends Migration
     {
 
         Schema::table('schedules', function (Blueprint $table) {
-            $table->date('start_date')->nullable(false)->change();
-            $table->date('due_date')->nullable(false)->change();
+            $table->datetime('start_date')->nullable(false)->change();
+            $table->datetime('due_date')->nullable(false)->change();
         });
     }
 

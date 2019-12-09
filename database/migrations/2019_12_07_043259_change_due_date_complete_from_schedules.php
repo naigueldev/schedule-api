@@ -14,7 +14,7 @@ class ChangeDueDateCompleteFromSchedules extends Migration
     public function up()
     {
         Schema::table('schedules', function (Blueprint $table) {
-            $table->date('due_date_complete')->nullable()->change();
+            $table->datetime('due_date_complete')->nullable()->change();
         });
     }
 
