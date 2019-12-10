@@ -1,7 +1,7 @@
- Schedule Rest Api - Laravel Framework
+ Agenda Rest Api - Laravel Framework
 =============
 
-Aplicação composta por módulo de agenda (CRUD), com registros das atividades do usuário.
+Aplicação composta por módulo de agenda (CRUD), com registros das atividades dos usuários.
 
 
 Instale as dependências do projeto
@@ -25,23 +25,21 @@ Crie as tabelas no banco de dados
 php artisan migrate
 ```
 
-Rodando o projeto
+Registre alguns Usuários e Status no banco de dados
 -----
-
-Registre os Status disponíveis com o comando:
 
 ```
 php artisan db:seed
 ```
 
-Inicie um servidor de desenvolvimento em http: // localhost: 8000
+Inicie um servidor de desenvolvimento
 -----------
 
 ```
 php artisan serve
 ```
 
-Configure o nome do banco de dados para rodar os testes da aplicação em:
+Configure o nome do banco de dados para rodar os Testes da aplicação em:
 -----------
 
 ```
@@ -51,7 +49,7 @@ phpunit.xml
 <server name="DB_DATABASE" value="db_name"/>
 ```
 
-Execute os testes automatizados
+Execute os testes automatizados:
 -----------
 
 ```
