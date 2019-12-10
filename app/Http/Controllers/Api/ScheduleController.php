@@ -26,10 +26,6 @@ class ScheduleController extends Controller
     {
         return $this->model->getBetweenDate($request);
     }
-    // public function index(Request $request)
-    // {
-    //     return Schedule::searchBetweenDates($request);
-    // }
 
     /**
      * Show the form for creating a new resource.
@@ -40,7 +36,7 @@ class ScheduleController extends Controller
     {
         $request->validated();
         
-        return Schedule::create($request->all());
+        return $this->model->create($request->all());
     }
 
     /**
@@ -51,7 +47,7 @@ class ScheduleController extends Controller
      */
     public function show($id)
     {
-        $res = Schedule::find($id);
+        $res = $this->model->findById($id);
         
         $error_msg = Helper::responseMessage('Nenhum item encontrado');
         
@@ -69,17 +65,16 @@ class ScheduleController extends Controller
     {
         $request->validated();
 
-        $data = Helper::formatDateColumns($request->all(), $this->model->formated_columns);
+        $data = Helper::formatDateColumns($request->all(), $this->model->getColumnsToFormat());
         
-        $schedule = Schedule::find($id);
+        $schedule = $this->model->findById($id);
         
         $error_msg = Helper::responseMessage('Nenhuma agenda encontrada para atualizar');
         
         if(!$schedule)
             return response()->json($error_msg, 404);
         
-        $schedule->update($data);
-        return $schedule;
+        return $this->model->update($id, $data);
     }
 
     /**
@@ -90,7 +85,7 @@ class ScheduleController extends Controller
      */
     public function destroy($id)
     {
-        $res = Schedule::destroy($id);
+        $res = $this->model->delete($id);
         
         $suscess_msg = Helper::responseMessage('Deletado com sucesso');
         

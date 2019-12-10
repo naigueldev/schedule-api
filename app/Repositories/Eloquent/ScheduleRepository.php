@@ -20,18 +20,46 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         return $this->model->all();
     }
 
+    public function findById($id)
+    {
+        return $this->model->find($id);
+    }
+
+    public function create(array $attributes)
+    {
+        return $this->model->create($attributes);
+    }
+
+    public function update($id, array $attributes)
+    {
+        $schedule = $this->model->findOrFail($id);
+        $schedule->update($attributes);
+        $schedule->save();
+        return $schedule;
+    }
+
+    public function delete($id)
+    {
+        return $this->model->destroy($id);
+    }
+
     public function getBetweenDate($request)
     {
         if ($request->has('initialDate') && $request->has('finalDate')) {
             $initialDate = Helper::dateToDb($request->initialDate);
             $finalDate = Helper::dateToDb($request->finalDate);
-            $schedules = Schedule::where([
+            $schedules = $this->model->where([
                 ['start_date', '>=', $initialDate],
                 ['start_date', '<=', $finalDate]
             ])->get();
             return $schedules;
         }
         
-        return Schedule::all();
+        return $this->model->all();
+    }
+
+    public function getColumnsToFormat()
+    {
+        return $this->model->formated_columns;
     }
 }

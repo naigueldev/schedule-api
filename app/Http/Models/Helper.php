@@ -68,4 +68,15 @@ class Helper
             "data" => ['message' => $msg]
         ];
     }
+    /**
+     * Substitui a barra por traço no formato da data
+     * 
+     * @param string
+     * @param string
+     * @return string
+     */
+    public static function getDateToParse($date, $divider='/')
+    {
+        return ($date) ? str_replace($divider, '-', $date) : $date;
+    }
 }

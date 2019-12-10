@@ -3,25 +3,34 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
-
+use App\Repositories\Contracts\UserRepositoryInterface;
 
 class UserController extends Controller
 {   
+    private $model;
+
+    public function __construct(UserRepositoryInterface $user)
+    {
+        $this->model = $user; 
+    }
+
+    /**
+     * Obtém todos os usuários cadastrados
+     */
     public function index()
     {
-        return User::all();
+        return $this->model->findAll();
     }
     /**
-     * Cria um novo usuario.
+     * Registra um novo usuario.
+     * 
+     * @param $request
      */
     public function store(StoreUserRequest $request)
     {
-       
         $request->validated();
 
-        return User::create($request->all());
+        return $this->model->create($request->all());
     }
 }
