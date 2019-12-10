@@ -17,5 +17,9 @@ class User extends Model
         'name'
     ];
 
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 
 }

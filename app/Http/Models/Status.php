@@ -11,4 +11,9 @@ class Status extends Model
     protected $fillable = [
         "name"
     ];
+
+    public function schedules()
+    {
+        return $this->belongsToMany(Schedule::class);
+    }
 }

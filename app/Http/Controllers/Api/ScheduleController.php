@@ -5,18 +5,26 @@ namespace App\Http\Controllers\Api;
 use App\Repositories\Contracts\ScheduleRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Models\Schedule;
 use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Http\Models\Helper;
+use App\Transformers\ScheduleTransformer;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
 
 class ScheduleController extends Controller
 {
     private $model;
 
-    public function __construct(ScheduleRepositoryInterface $schedule)
+    private $fractal;
+    
+    private $scheduleTransformer;
+
+    public function __construct(ScheduleRepositoryInterface $schedule, Manager $fractal, ScheduleTransformer $scheduleTransformer)
     {
         $this->model = $schedule;    
+        $this->fractal = $fractal;
+        $this->scheduleTransformer = $scheduleTransformer;
     }
     /**
      * Mostra uma lista das atividades
@@ -24,7 +32,12 @@ class ScheduleController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->model->getBetweenDate($request);
+        $schedules = $this->model->getBetweenDate($request);
+        $schedules = new Collection($schedules, $this->scheduleTransformer);
+        // $this->fractal->parseIncludes($request->get('include', ''));
+        $schedules = $this->fractal->createData($schedules);
+
+        return $schedules->toArray();
     }
 
     /**
