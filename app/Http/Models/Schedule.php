@@ -8,7 +8,12 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class Schedule extends Model
-{   
+{  
+    /**
+     * Indica se as colunas created_at e updated_at existem
+     * 
+     * @var bool
+     */
     public $timestamps = false;
     
     public $table = "schedules";
@@ -23,7 +28,7 @@ class Schedule extends Model
         "user_id"
     ];
 
-    protected $dateFormat = 'Y-m-d H:i:s';
+    protected $date_format = 'Y-m-d H:i:s';
 
     protected $casts = [
         'start_date' => 'datetime:d/m/Y H:i:s',
@@ -54,7 +59,6 @@ class Schedule extends Model
 
     public static function searchBetweenDates($request)
     {
-
         if ($request->has('initialDate') && $request->has('finalDate')) {
             $initialDate = Helper::dateToDb($request->initialDate);
             $finalDate = Helper::dateToDb($request->finalDate);
@@ -68,20 +72,20 @@ class Schedule extends Model
     public function setStartDateAttribute($date, $divider='/') 
     {
         $date = ($date) ? str_replace($divider, '-', $date) : $date;
-        $this->attributes['start_date']= Carbon::parse($date)->format($this->dateFormat);
+        $this->attributes['start_date']= Carbon::parse($date)->format($this->date_format);
     }
 
     public function setDueDateAttribute($date, $divider='/') 
     {
         $date = ($date) ? str_replace($divider, '-', $date) : $date;
-        $this->attributes['due_date'] = Carbon::parse($date)->format($this->dateFormat);
+        $this->attributes['due_date'] = Carbon::parse($date)->format($this->date_format);
     }
+
     public function setDueDateCompleteAttribute($date, $divider='/') 
     {
         $date = ($date) ? str_replace($divider, '-', $date) : $date;
-        
         if(isset($this->attributes['due_date_complete']))
-            $this->attributes['due_date_complete'] ($date) ? Carbon::parse($date)->format($this->dateFormat) : $date;
+            $this->attributes['due_date_complete'] ($date) ? Carbon::parse($date)->format($this->date_format) : $date;
     }
 
 }

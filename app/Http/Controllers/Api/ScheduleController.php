@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Repositories\Contracts\ScheduleRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Schedule;
@@ -13,7 +14,7 @@ class ScheduleController extends Controller
 {
     private $model;
 
-    public function __construct(Schedule $schedule)
+    public function __construct(ScheduleRepositoryInterface $schedule)
     {
         $this->model = $schedule;    
     }
@@ -23,8 +24,12 @@ class ScheduleController extends Controller
      */
     public function index(Request $request)
     {
-        return Schedule::searchBetweenDates($request);
+        return $this->model->getBetweenDate($request);
     }
+    // public function index(Request $request)
+    // {
+    //     return Schedule::searchBetweenDates($request);
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -89,7 +94,7 @@ class ScheduleController extends Controller
         
         $suscess_msg = Helper::responseMessage('Deletado com sucesso');
         
-        $error_msg = Helper::responseMessage('Falha ao deletar');
+        $error_msg = Helper::responseMessage('Falha ao deletar! Item não encontrado');
         
         return ($res) ? response()->json($suscess_msg, 200) : response()->json($error_msg, 409);
     }
