@@ -4,7 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use Carbon\Carbon;
-use App\Http\Models\Helper;
+use App\Helpers\Helper;
 
 class ScheduleValidationWeekendRule implements Rule
 {

@@ -3,7 +3,7 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Models\Helper;
+use App\Helpers\Helper;
 use Carbon\Carbon;
 
 class Schedule extends Model

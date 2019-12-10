@@ -4,7 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Repositories\Contracts\ScheduleRepositoryInterface;
 use App\Http\Models\Schedule;
-use App\Http\Models\Helper;
+use App\Helpers\Helper;
 
 class ScheduleRepository implements ScheduleRepositoryInterface
 {
@@ -22,7 +22,7 @@ class ScheduleRepository implements ScheduleRepositoryInterface
 
     public function findById($id)
     {
-        return $this->model->find($id);
+        return $this->model->where('id','=',$id)->get();
     }
 
     public function create(array $attributes)

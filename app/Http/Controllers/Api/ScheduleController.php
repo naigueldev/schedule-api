@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
-use App\Http\Models\Helper;
+use App\Helpers\Helper;
 use App\Transformers\ScheduleTransformer;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
@@ -33,8 +33,9 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         $schedules = $this->model->getBetweenDate($request);
+        
         $schedules = new Collection($schedules, $this->scheduleTransformer);
-        // $this->fractal->parseIncludes($request->get('include', ''));
+        
         $schedules = $this->fractal->createData($schedules);
 
         return $schedules->toArray();
@@ -60,11 +61,15 @@ class ScheduleController extends Controller
      */
     public function show($id)
     {
-        $res = $this->model->findById($id);
+        $schedule = $this->model->findById($id);
         
+        $schedule = new Collection($schedule, $this->scheduleTransformer);
+        
+        $schedule = $this->fractal->createData($schedule);
+
         $error_msg = Helper::responseMessage('Nenhum item encontrado');
         
-        return ($res) ? response()->json($res, 200) : response()->json($error_msg, 404);
+        return ($schedule) ? response()->json($schedule->toArray(), 200) : response()->json($error_msg, 404);
     }
 
     /**
