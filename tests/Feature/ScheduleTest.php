@@ -19,6 +19,28 @@ class ScheduleTest extends TestCase
     private $faker;
     private $date_format = 'd/m/Y H:i:s';
 
+    private $default_structure = [
+        'data' => [
+            '0' => [
+                'id_agenda',
+                'data_prazo',
+                'data_conclusao',
+                'titulo',
+                'descricao',
+                'status' => [
+                    'data' => [
+                        'nome'
+                    ]
+                ],
+                'user' => [
+                    'data' => [
+                        'nome'
+                    ]
+                ]
+            ]
+        ]
+    ];
+
     public function setUp(): void
     {
         parent::setUp();
@@ -63,27 +85,7 @@ class ScheduleTest extends TestCase
         $response = $this->call('GET', 'api/schedules');
         
         $response->assertStatus(200)
-            ->assertJsonStructure([
-                'data' => [
-                    '0' => [
-                        'id_agenda',
-                        'data_prazo',
-                        'data_conclusao',
-                        'titulo',
-                        'descricao',
-                        'status' => [
-                            'data' => [
-                                'nome'
-                            ]
-                        ],
-                        'user' => [
-                            'data' => [
-                                'nome'
-                            ]
-                        ]
-                    ]
-                ]
-            ]);
+            ->assertJsonStructure($this->default_structure);
     }
 
     public function testCanUpdateSchedule()
@@ -103,7 +105,7 @@ class ScheduleTest extends TestCase
 
         $response = $this->putJson('api/schedules/' . $schedule->id, $data);
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)->assertJsonStructure($this->default_structure);
     }
 
     public function testCanDeleteSchedule()

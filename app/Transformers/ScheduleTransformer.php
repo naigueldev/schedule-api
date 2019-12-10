@@ -16,6 +16,7 @@ class ScheduleTransformer extends TransformerAbstract
     {
         return [
             "id_agenda"      => (int) $schedule->id,
+            "data_inicial"   => (string) $schedule->start_date,
             "data_prazo"     => (string) $schedule->due_date,
             "data_conclusao" => (string) $schedule->due_date_complete,
             "titulo"         => (string) $schedule->title,

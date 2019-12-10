@@ -32,9 +32,8 @@ class ScheduleRepository implements ScheduleRepositoryInterface
 
     public function update($id, array $attributes)
     {
-        $schedule = $this->model->findOrFail($id);
+        $schedule = $this->model->find($id);
         $schedule->update($attributes);
-        $schedule->save();
         return $schedule;
     }
 

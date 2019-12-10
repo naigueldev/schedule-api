@@ -17,12 +17,12 @@ class ScheduleController extends Controller
     private $model;
 
     private $fractal;
-    
+
     private $scheduleTransformer;
 
     public function __construct(ScheduleRepositoryInterface $schedule, Manager $fractal, ScheduleTransformer $scheduleTransformer)
     {
-        $this->model = $schedule;    
+        $this->model = $schedule;
         $this->fractal = $fractal;
         $this->scheduleTransformer = $scheduleTransformer;
     }
@@ -33,9 +33,9 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         $schedules = $this->model->getBetweenDate($request);
-        
+
         $schedules = new Collection($schedules, $this->scheduleTransformer);
-        
+
         $schedules = $this->fractal->createData($schedules);
 
         return $schedules->toArray();
@@ -49,7 +49,7 @@ class ScheduleController extends Controller
     public function store(StoreScheduleRequest $request)
     {
         $request->validated();
-        
+
         return $this->model->create($request->all());
     }
 
@@ -62,13 +62,13 @@ class ScheduleController extends Controller
     public function show($id)
     {
         $schedule = $this->model->findById($id);
-        
+
         $schedule = new Collection($schedule, $this->scheduleTransformer);
-        
+
         $schedule = $this->fractal->createData($schedule);
 
         $error_msg = Helper::responseMessage('Nenhum item encontrado');
-        
+
         return ($schedule) ? response()->json($schedule->toArray(), 200) : response()->json($error_msg, 404);
     }
 
@@ -84,15 +84,23 @@ class ScheduleController extends Controller
         $request->validated();
 
         $data = Helper::formatDateColumns($request->all(), $this->model->getColumnsToFormat());
-        
+
         $schedule = $this->model->findById($id);
-        
+
         $error_msg = Helper::responseMessage('Nenhuma agenda encontrada para atualizar');
-        
-        if(!$schedule)
+
+        if (!$schedule)
             return response()->json($error_msg, 404);
         
-        return $this->model->update($id, $data);
+        $schedule = $this->model->update($id, $data);
+        
+        $schedule = $this->model->findById($id);
+
+        $schedule = new Collection($schedule, $this->scheduleTransformer);
+
+        $schedule = $this->fractal->createData($schedule);
+
+        return $schedule->toArray();
     }
 
     /**
@@ -104,11 +112,11 @@ class ScheduleController extends Controller
     public function destroy($id)
     {
         $res = $this->model->delete($id);
-        
+
         $suscess_msg = Helper::responseMessage('Deletado com sucesso');
-        
+
         $error_msg = Helper::responseMessage('Falha ao deletar! Item não encontrado');
-        
+
         return ($res) ? response()->json($suscess_msg, 200) : response()->json($error_msg, 409);
     }
 }
