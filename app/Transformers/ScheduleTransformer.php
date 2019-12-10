@@ -7,25 +7,29 @@ use League\Fractal\TransformerAbstract;
 
 class ScheduleTransformer extends TransformerAbstract
 {   
-    protected $availableIncludes = [
-        'status'
+    protected $defaultIncludes = [
+        'status',
+        'user'
     ];
 
     public function transform(Schedule $schedule)
     {
         return [
-            "id_agenda" => $schedule->id,
-            "data_prazo" => $schedule->due_date,
-            "data_conclusao" => $schedule->due_date_complete,
-            "titulo" => $schedule->title,
-            "descricao" => $schedule->description,
-            "responsavel" => $schedule->user_id,
-            "status" => $schedule->status
+            "id_agenda"      => (int) $schedule->id,
+            "data_prazo"     => (string) $schedule->due_date,
+            "data_conclusao" => (string) $schedule->due_date_complete,
+            "titulo"         => (string) $schedule->title,
+            "descricao"      => (string) $schedule->description
         ];
     }
 
     public function includeStatus(Schedule $schedule)
     {
-        return $this->collection($schedule->status_id, new StatusTransformer);
+        return $this->item($schedule->status, new StatusTransformer);
+    }
+
+    public function includeUser(Schedule $schedule)
+    {
+        return $this->item($schedule->user, new UserTransformer);
     }
 }

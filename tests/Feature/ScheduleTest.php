@@ -8,7 +8,6 @@ use App\Http\Models\Schedule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Http\Models\User;
 use App\Http\Models\Status;
-use Carbon\Carbon;
 use DateTime;
 
 class ScheduleTest extends TestCase
@@ -59,11 +58,32 @@ class ScheduleTest extends TestCase
      */
     public function testCanListSchedules()
     {
-        $schedules = factory(Schedule::class)->create();
+        factory(Schedule::class)->create();
 
         $response = $this->call('GET', 'api/schedules');
-
-        $response->assertStatus(200);
+        
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    '0' => [
+                        'id_agenda',
+                        'data_prazo',
+                        'data_conclusao',
+                        'titulo',
+                        'descricao',
+                        'status' => [
+                            'data' => [
+                                'nome'
+                            ]
+                        ],
+                        'user' => [
+                            'data' => [
+                                'nome'
+                            ]
+                        ]
+                    ]
+                ]
+            ]);
     }
 
     public function testCanUpdateSchedule()
@@ -120,7 +140,7 @@ class ScheduleTest extends TestCase
 
     public function testCanSearchSchedulesByStartDate()
     {
-        $schedules = factory(Schedule::class, 3)->create();
+        factory(Schedule::class, 3)->create();
 
         $params = "initialDate=" . $this->faker->dateTimeBetween('+1 days', '+5 days')->format($this->date_format);
 

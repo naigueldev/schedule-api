@@ -10,7 +10,7 @@ class StatusTransformer extends TransformerAbstract
     public function transform(Status $status)
     {
         return [
-            "nome_status" => $status->name
+            "nome" => $status->name
         ];
     }
 
