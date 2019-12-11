@@ -64,7 +64,7 @@ class Schedule extends Model
             $this->attributes['start_date'] = Carbon::parse($date)->format($this->date_format);
     }
 
-    public function setDueDateAttribute($date, $divider='/') 
+    public function setDueDateAttribute($date) 
     {
         $date = Helper::getDateToParse($date);
         
@@ -72,7 +72,7 @@ class Schedule extends Model
             $this->attributes['due_date'] = Carbon::parse($date)->format($this->date_format);
     }
 
-    public function setDueDateCompleteAttribute($date, $divider='/') 
+    public function setDueDateCompleteAttribute($date) 
     {
         $date = Helper::getDateToParse($date);
         if(isset($this->attributes['due_date_complete']) && $date)
