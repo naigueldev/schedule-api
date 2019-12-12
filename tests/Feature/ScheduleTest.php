@@ -4,10 +4,10 @@ namespace Tests\Feature;
 
 use Faker\Factory;
 use Tests\TestCase;
-use App\Http\Models\Schedule;
+use App\Models\Schedule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Http\Models\User;
-use App\Http\Models\Status;
+use App\Models\User;
+use App\Models\Status;
 use DateTime;
 
 class ScheduleTest extends TestCase

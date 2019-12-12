@@ -3,7 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Repositories\Contracts\UserRepositoryInterface;
-use App\Http\Models\User;
+use App\Models\User;
 
 class UserRepository implements UserRepositoryInterface
 {

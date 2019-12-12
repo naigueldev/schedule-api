@@ -3,7 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use App\Http\Models\Schedule;
+use App\Models\Schedule;
 
 class ScheduleValidationOnUpdate implements Rule
 {
@@ -29,7 +29,7 @@ class ScheduleValidationOnUpdate implements Rule
      */
     public function passes($attribute, $value)
     {
-        return ($this->schedule);
+        return !empty($this->schedule);
     }
 
     /**

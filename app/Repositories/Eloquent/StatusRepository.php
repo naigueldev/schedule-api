@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Http\Models\Status;
+use App\Models\Status;
 use App\Repositories\Contracts\StatusRepositoryInterface;
 
 class StatusRepository implements StatusRepositoryInterface

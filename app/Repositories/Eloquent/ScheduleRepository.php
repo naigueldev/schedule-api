@@ -3,7 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Repositories\Contracts\ScheduleRepositoryInterface;
-use App\Http\Models\Schedule;
+use App\Models\Schedule;
 use App\Helpers\Helper;
 
 class ScheduleRepository implements ScheduleRepositoryInterface

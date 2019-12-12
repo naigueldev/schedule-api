@@ -2,7 +2,7 @@
 
 namespace App\Transformers;
 
-use App\Http\Models\Schedule;
+use App\Models\Schedule;
 use League\Fractal\TransformerAbstract;
 
 class ScheduleTransformer extends TransformerAbstract

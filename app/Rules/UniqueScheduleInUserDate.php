@@ -3,10 +3,8 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use App\Http\Models\Schedule;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\Helper;
-use Carbon\Carbon;
 
 class UniqueScheduleInUserDate implements Rule
 {

@@ -3,7 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use Faker\Generator as Faker;
-use App\Http\Models\Schedule;
+use App\Models\Schedule;
 
 $factory->define(Schedule::class, function (Faker $faker) {
     

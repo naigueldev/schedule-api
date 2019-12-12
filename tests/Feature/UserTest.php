@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Faker\Factory;
 use Tests\TestCase;
-use App\Http\Models\User;
+use App\Models\User;
 
 class UserTest extends TestCase
 {
